@@ -1,0 +1,72 @@
+---
+title: "dts.quality Package"
+author: "Lee Kennedy"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+## anova_report
+
+This function is for comparing two or more data sets for equivalence using ANOVA.  The output is a Word document that includes
+
+1. the data
+2. a boxplot of the data
+3. An ANOVA table and 
+4. A Tukey intepretation of the data.
+
+It expects a data table of the form usually used for ANOVA in Excel:
+
+```{r, echo=FALSE}
+A <- c(2,4,3,3)
+B <- c(2,3,5,2)
+C <- c(1,1,5,2)
+D <- c(2,3,2,2)
+E <- c(2,3,3,4)
+x <- data.frame(A,B,C,D,E)
+print(x, row.names = FALSE)
+```
+
+
+And, optionally, will accept units (in inverted commas) for labelling a box plot.
+
+**Usage**: with a data file named "df" and units "mg/kg": **anova_report(df, "mg/kg")**
+
+## combo
+
+This function takes a data frame of figures such as might be presented for an ANOVA analysis (see *anova_report*, above) and creates all possible repeatability and reproducibility combinations, labelled as such.  It drops the column headers.
+
+**Usage**: with a data file named "df": **combo(df)**
+
+## dupes
+
+This function takes a data frame and reduces it to just the rows that have been duplicated.  When more than one column is nominated, all columns must match.
+
+**Usage**: 
+
++  with a data file named "df" and column "A": **dupes(df, c("A"))**
++  with a data file named "df" and columns "A" and "D": **dupes(df, c("A", "D"))**
+
+## horwitz
+
+This function calculates the estimated Horwitz value for a given concentration.
+
+**Usage**: with a value named "x": **horwitx(x,n)** when n is the factor to reduce the result to g/g.  n = 2 for g/100g, 6 for mg/kg. 
+
+
+## outliers
+
+This function identifies outliers in a list of data points.
+
+**Usage**: with a list named "x": **outliers(x,b)** where b is to optionally display boxplots.  By default it equals FALSE.
+
+## srm_limits
+
+This function takes an SRM extract file from LIMS and determines the control limits.
+
+(incomplete)
+
