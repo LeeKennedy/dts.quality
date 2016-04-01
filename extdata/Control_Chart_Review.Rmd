@@ -1,0 +1,243 @@
+---
+title: "Control Chart Review"
+output: word_document
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+---
+
+```{r, echo=FALSE,message=FALSE}
+
+
+colnames(x)[1] <- "SAMPLE_NUMBER"
+library(dplyr)
+library(psych)
+library(ggplot2)
+
+testname <- substr(x$ANALYSIS[1],1,6)
+
+Name <- x$REPORTED_NAME[1]
+Units <- tolower(sub("_P_","/",(x$REPORTED_UNITS[1])))
+testcode <- paste("Test Code :", testname)
+```
+###`r testcode`
+
+```{r echo=FALSE}
+# Input parameters ----------------------------------------------------------------
+
+max.pts <- max.pts # Maximum points plotted
+points <- points   # How many points used to set control lines
+
+# ---------------------------------------------------------------------------------
+```
+
+The recent control samples with this test have been:
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+
+# Clean the data
+data.in <- select(x, everything())%>%
+        arrange(SAMPLE_NUMBER)%>%
+        select(ASSIGNED_OPERATOR, SAMPLING_POINT, ENTRY)%>%
+        mutate(ENTRY = as.numeric(as.character(ENTRY)))%>%
+        na.omit
+
+
+boxplot(data.in$ENTRY~data.in$SAMPLING_POINT,
+         main = paste("Comparative ",testname," SRM/IRM Results"),
+        ylab = paste(Name," ", Units))
+```
+
+The following is the most recent control chart (control lines caluclated after omitting any outliers (shown in red)).
+
+This chart uses up to the `r max.pts` most recent data points (less if there are not that many points available) and sets the control lines using the first `r points` of them.  If present, green points represent 'one side of the mean' trending error and yellow points represent a 'seven point' increasing or decreasing trend.
+
+```{r, echo=FALSE,message=FALSE}
+j <- length(unique(data.in$SAMPLING_POINT))
+
+remove.outliers <- function(x, na.rm = TRUE, ...) {
+        qnt <- quantile(x, probs=c(.25, .75), na.rm = na.rm, ...)
+        H <- 1.5 * IQR(x, na.rm = na.rm)
+        y <- x
+        y[x < (qnt[1] - H)] <- NA
+        y[x > (qnt[2] + H)] <- NA
+        y
+}
+srm1 <- unique(data.in[2])
+
+srm <- srm1[j,]
+
+data.in3 <- data.in[data.in$SAMPLING_POINT==srm,]
+names(data.in3) <- c("Operator", "SRM","A")
+data.in3 <- select(data.in3, everything())%>%
+        filter( between(row_number(), n()-max.pts, n()))
+
+clean <- remove.outliers(data.in3$A[1:points])
+xx <- describe(clean)
+
+UCL <- xx$mean + 3*xx$sd
+UWL <- xx$mean + 2*xx$sd
+Centre <- xx$mean 
+LWL <- xx$mean - 2*xx$sd
+LCL <- xx$mean - 3*xx$sd
+MU <- 2*xx$sd
+
+CC <- c(UCL, UWL, Centre, LWL, LCL ,MU)
+Labels <- c("UCL", "UWL", "Centre", "LWL", "LCL", "MU +/-")
+Clines <- cbind(Labels, round(CC,3))
+Clines <- as.data.frame(Clines)
+
+# Calculate outliers -----------------------------------------------------------
+data.in3$outliers = NA
+j <- nrow(data.in3)
+
+for (i in 1:j) {
+        if(between(data.in3$A[i], LCL, UCL)==TRUE)
+           data.in3$outliers[i]=data.in3$A[i]
+}
+
+# Calculate trend on one side of mean ------------------------------------------
+data.in3$T1 <- 1
+data.in3$T2 <- 1
+
+for (i in 2:j) {
+        if(data.in3$A[i] < Centre)
+                data.in3$T1[i] = -1
+}
+n=1
+for (i in 2:j) {
+        if(data.in3$T1[i] == data.in3$T1[i - 1]) {
+                data.in3$T2[i] = n +1
+                n = n + 1
+        } else {  
+                data.in3$T2[i] = 1
+                n = 1
+        }
+}
+
+data.in3$T3 <- NA
+for (i in 1:j) {
+        if(data.in3$T2[i] > 6)
+                data.in3$T3[i] = data.in3$A[i]
+}
+
+# Trending up or down -----------------------------------------------------
+
+data.in3$T4 <- 1
+data.in3$T5 <- 1
+
+for (i in 2:j) {
+        if(data.in3$A[i] < data.in3$A[i-1])
+                data.in3$T4[i] = -1
+}
+n=1
+for (i in 2:j) {
+        if(data.in3$T4[i] == data.in3$T4[i - 1]) {
+                data.in3$T5[i] = n +1
+                n = n + 1
+        } else {  
+                data.in3$T5[i] = 1
+                n = 1
+        }
+}
+
+data.in3$T6 <- NA
+for (i in 1:j) {
+        if(data.in3$T5[i] > 6)
+                data.in3$T6[i] = data.in3$A[i]
+}
+
+
+# Plotting ----------------------------------------------------------------
+
+plot(data.in3$A, 
+        type="p", 
+        pch= 19, 
+        cex=1.0, 
+        col ="red", 
+        ylim = c(LCL*0.9,UCL*1.1),
+        ylab = paste(Name," ", Units),
+        xlab="")
+
+par(new=T)
+
+plot(data.in3$outliers, 
+        type="o", 
+        pch=19, 
+        cex=1.0, 
+        col="grey40", 
+        ylim = c(LCL*0.9,UCL*1.1), 
+        ylab = paste(Name," ", Units), 
+        main = paste(srm, "(", Name,") Control Chart"),
+        xlab="")
+
+par(new=T)
+
+plot(data.in3$T3, 
+     type="p", 
+     pch= 19, 
+     cex=1.0, 
+     col ="limegreen", 
+     ylim = c(LCL*0.9,UCL*1.1),
+     ylab = paste(Name," ", Units),
+     xlab="")
+
+par(new=T)
+
+plot(data.in3$T6, 
+     type="p", 
+     pch= 19, 
+     cex=1.0, 
+     col ="orange", 
+     ylim = c(LCL*0.9,UCL*1.1),
+     ylab = paste(Name," ", Units),
+     xlab="")
+
+abline(h=Centre, col = "blue", lty=2, lwd=2)
+abline(h=UCL, col = "red", lty=2, lwd=2)
+abline(h=UWL, col = "darkgreen", lty=3, lwd=2)
+abline(h=LWL, col = "darkgreen", lty=3, lwd=2)
+abline(h=LCL, col = "red", lty=2, lwd=2)
+
+```
+
+The histogram of the data points.  Red line = mean:
+
+```{r, echo=FALSE}
+hist(data.in3$outliers, 
+     breaks=20, 
+     xlab=srm,
+     main = paste("Control Chart",srm,"data distribution"))
+abline(v = Centre, col = "red", lty = 2)
+```
+
+**Review**
+1. Is it skewed?
+2. Is it normal shaped?
+.
+
+The general statistics for the data are:
+
+```{r,echo=FALSE}
+print(describe(clean))
+```
+
+The values for the control lines used  in the chart are:
+
+```{r, echo=FALSE}
+print (Clines)
+```
+
+The results obtained by each operator.  Blue line = mean:
+
+```{r, echo=FALSE}
+xx <- boxplot(data.in3$A~data.in3$Operator, las=2, cex.axis = 0.8)
+abline(h=Centre, col = "blue", lty=2, lwd=2)
+```
+
+Number of control samples run by each operator:
+
+```{r, echo=FALSE}
+table(data.in3$Operator)
+```
+
+
+

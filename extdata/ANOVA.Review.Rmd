@@ -1,0 +1,55 @@
+---
+title: "Comparison of Datasets by ANOVA"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: word_document
+---
+
+The following data is to be assessed as to whether there are significant differences between the individual groups.
+
+```{r, echo =FALSE}
+x2 <- x
+cf <- format(x2)
+cf[is.na(x2)] <- ""
+cf
+```
+
+This can be displayed in a Boxplot visualisation.  Circles, if present, represent outliers.
+
+```{r, echo=FALSE}
+boxplot(x,
+        frame = TRUE,
+        horizontal = FALSE,
+        range = 1, # 1 displays outliers
+        las = 0, #horizontal labels
+        col = "cornsilk",
+        whisklty = 1, # 1 = solid line
+        staplelty = 1,# end type, 0 = none
+        outpch = 1, # symbol for outliers, 16 = filled circle
+        outcol = "black", # colour of outliers
+        main = "",
+        xlab = "",
+        ylab = units)
+```
+
+
+
+
+
+An ANOVA assessment of the data is:
+
+```{r, echo=FALSE}
+#convert to a two element stack
+xs <- na.omit(stack(x))
+# Run ANOVA
+anova1 <- aov(values ~ ind, data = xs)
+#Review results
+summary(anova1)
+```
+If the "Pr(>F)" value is less than 0.05, it idicates that there is a significant difference between the means of the data sets but doesn't indicate which.  
+
+Looking at the individual differences, using Tukey's HSD criteria, gives an indication of which means differ significantly from each other.  A "p adj" value of less than 0.05 indicates a  significant difference.
+
+```{r,echo=FALSE}
+TukeyHSD(anova1)
+```
+
