@@ -65,3 +65,5 @@ RESULT   | REPORTED_VALUE
 RESULT   | ENTRY
 RESULT   | REPORTABLE
 RESULT   | ENTERED_BY
+
+**Usage**: with a dataframe extracted for the above parameters, named "x": **TCAR(x)** 
