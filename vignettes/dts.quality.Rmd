@@ -49,4 +49,19 @@ This function identifies outliers in a list of data points.
 
 **Usage**: with a list named "x": **outliers(x,b)** where b is to optionally display boxplots.  By default it equals FALSE.
 
+## TCAR
 
+This function takes a LIMS extract (as a data frame) and rearranges it to look at the components in the Total Carbohydrate calculation.
+
+The items extracted from LIMS are:
+
+Group    |   Sub-Item
+---------|-------------
+SAMPLE   | SAMPLE_NUMBER
+TEST     | ANALYSIS
+RESULT   | REPORTED_NAME
+RESULT   | REPORTED_UNITS
+RESULT   | REPORTED_VALUE
+RESULT   | ENTRY
+RESULT   | REPORTABLE
+RESULT   | ENTERED_BY
