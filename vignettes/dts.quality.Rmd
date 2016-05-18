@@ -79,3 +79,5 @@ H1 = the two sets are equivalent, being no more than epsilon apart.
 
 **Usage**: with two data sets, "A" and "B" and a proposed acceptable difference, "E".: **TOST(A, B, E, b)** where b is to optionally display boxplots.  By default it equals FALSE.
 
+----
+
