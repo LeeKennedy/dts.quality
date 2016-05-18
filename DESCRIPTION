@@ -1,6 +1,6 @@
 Package: dts.quality
 Title: Internal collection of useful little scripts
-Version: 0.0.1.0000
+Version: 0.0.1.1
 Authors@R: person("Lee", "Kennedy", email = "lkennedt@dtsfoodlabs.com.au", role = c("aut", "cre"))
 Description: This package has a number of useful scripts for examining and
     processing laboratory quality data..
