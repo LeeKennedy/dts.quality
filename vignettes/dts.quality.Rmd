@@ -67,3 +67,15 @@ RESULT   | REPORTABLE
 RESULT   | ENTERED_BY
 
 **Usage**: with a dataframe extracted for the above parameters, named "x": **TCAR(x)** 
+
+## TOST
+
+This function examines two data sets and estimates whether they are equivalent, allowing for a (nominated) acceptable difference, E.
+
+Ho = the two sets are different. (The revers to the normal Ho.)
+H1 = the two sets are equivalent, being no more than epsilon apart.
+"Not rejected" means that we have not proven that the two sets are equivalent.
+"Rejected" means that there is enough evidence to say that the sets are equivalent, when we accept that equivalence is no more than 'epsilon' apart.
+
+**Usage**: with two data sets, "A" and "B" and a proposed acceptable difference, "E".: **TOST(A, B, E, b)** where b is to optionally display boxplots.  By default it equals FALSE.
+

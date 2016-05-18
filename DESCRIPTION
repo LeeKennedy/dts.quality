@@ -14,7 +14,8 @@ Depends:
     dplyr,
     psych,
     lubridate,
-    tidyr
+    tidyr (>= 0.4.1),
+    equivalence (>= 0.7.2)
 License: GPL-2
 LazyData: true
 VignetteBuilder: knitr
