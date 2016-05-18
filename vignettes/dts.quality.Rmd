@@ -12,7 +12,7 @@ vignette: >
 
 ## combo
 
-This function takes a data frame of figures such as might be presented for an ANOVA analysis and creates all possible repeatability and reproducibility combinations, labelled as such.  It drops the column headers.
+This function takes a data frame of figures such as might be presented for an ANOVA analysis and creates all possible repeatability and reproducibility combinations, labelled as such.  It drops the column headers..
 
 ```{r, echo=FALSE}
 A <- c(2,4,3,3)
@@ -70,7 +70,7 @@ RESULT   | ENTERED_BY
 
 ## TOST
 
-This function examines two data sets and estimates whether they are equivalent, allowing for a (nominated) acceptable difference, E.
+This function examines two data sets and estimates whether they are equivalent, allowing for a (nominated) acceptable difference, E..
 
 Ho = the two sets are different. (The revers to the normal Ho.)
 H1 = the two sets are equivalent, being no more than epsilon apart.
