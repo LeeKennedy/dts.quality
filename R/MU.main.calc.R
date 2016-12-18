@@ -294,11 +294,12 @@ process.MU <- function (x,hv) {
         write.csv(f1b, file= paste("bootstrap_",file.name,".csv", sep=""), row.names=FALSE)
 
         # Summarising data ---------------------------------------------------------------------------
-        b1 <- tapply(f1$A, f1$Product, length)
-        b2 <- tapply(f1$A, f1$Product, mean)
-        b3c <- tapply(f1$f5, f1$Product, stdd)
-        b4 <- cbind(b2, b1, b3c)
-        b4 <- as.data.frame(b4)
+        b4 <- f1 %>%
+                group_by(Product) %>%
+                summarise(b1 = length(A),
+                          b2 = mean(A),
+                          b3c = stdd(f5))
+
         b4$Type <- "Interim Precision"
         b4$Products <- row.names(b4)
         b4$Analyte <- f0$Name[1]
@@ -306,8 +307,9 @@ process.MU <- function (x,hv) {
         b4$Method <- substr(f0$Analysis[1],1,6)
         b4$Unit <- f0$Unit[1]
         b4$Source <- "Replicates"
-        b4 <- b4[,c(5:9,4,10,1,2,3)]
-        #b4$RSD <- round(b4[,10]*100/b4[,8],1)
+
+        b4 <- b4[,c(1,7:10,5,11,3,2,4)]
+
         colnames(b4)[1:10] <- c('Matrix','Analyte','Conc','Method','Unit','Type','Source','Mean', 'n', 'sd')
         b5 <- b4[b4$n>6,]
 
@@ -323,17 +325,19 @@ process.MU <- function (x,hv) {
         cf3 <- split(f2$diff, f2$Product)
         cf4 <- lapply(cf3, remove.outliers)
         cf4a <- lapply(cf4, remove.outliers)
-        cf5 <- cbind(cf4a, f2$Product)
+        cf5 <- unsplit(cf4a, f2$Product)
 
         cf2a <- cbind(f2,cf5)
         f2 <- na.omit(cf2a)
 
         rd=2
-        cb1 <- tapply(f2$A, f2$Product, length)
-        cb2 <- tapply(f2$A, f2$Product, mean)
-        cb2a <- tapply(f2$diff, f2$Product, stdd)
-        cb4 <- cbind(cb2, cb1, cb2a)
-        cb4 <- as.data.frame(cb4)
+
+        cb4 <- f2 %>%
+                group_by(Product) %>%
+                summarise(b1 = length(A),
+                          b2 = mean(A),
+                          b3c = stdd(cf5))
+
         cb4$Type <- "Repeatability"
         cb4$Products <- row.names(cb4)
         cb4$Analyte <- f0$Name[1]
@@ -341,8 +345,9 @@ process.MU <- function (x,hv) {
         cb4$Method <- substr(f0$Analysis[1],1,6)
         cb4$Unit <- f0$Unit[1]
         cb4$Source <- "Duplicates"
-        cb4 <- cb4[,c(5:9,4,10,1,2,3)]
-        #cb4$RSD <- round(cb4[,10]*100/cb4[,8],3)
+
+        cb4 <- cb4[,c(1,7:10,5,11,3,2,4)]
+
         colnames(cb4)[1:10] <- c('Matrix','Analyte','Conc','Method','Unit','Type','Source','Mean', 'n', 'sd')
         cb5 <- cb4[cb4$n>6,]
 
@@ -351,6 +356,7 @@ process.MU <- function (x,hv) {
 
         # Export Product precision data --------------------------------------------------------------
         write.csv(db4, file = "Products.csv", row.names = TRUE)
+
 
         # SRM interrogation --------------------------------------------------------------------------
         data.in4 <- read.csv("srmdata.csv", as.is=TRUE, header=TRUE)
