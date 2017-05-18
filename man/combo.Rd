@@ -16,4 +16,3 @@ The data is in similar format to ANOVA data.
 }
 \keyword{MU}
 \keyword{combinations,}
-

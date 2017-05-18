@@ -15,4 +15,3 @@ dupes(x, y)
 This function reduces a file to the duplicated values only, using the nominated column or columns.
 }
 \keyword{duplicates}
-

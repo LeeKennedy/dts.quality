@@ -16,4 +16,3 @@ A routine for identifying outliers in a vector of data based on IQR robust stati
 }
 \keyword{MU}
 \keyword{outliers,}
-

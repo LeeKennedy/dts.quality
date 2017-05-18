@@ -15,4 +15,3 @@ horwitz(x, n)
 This function calculates a Horwitz standard deviation for a given data value.
 }
 \keyword{horwitz}
-

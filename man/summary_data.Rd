@@ -14,4 +14,3 @@ This function summarises data in a extracted csv file to display numbers of repo
 }
 \keyword{cleaning}
 \keyword{data}
-

@@ -18,4 +18,3 @@ This function takes the srm file stripped from the MU calculation data and deter
 \keyword{chart,}
 \keyword{control}
 \keyword{srm,}
-

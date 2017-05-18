@@ -20,4 +20,3 @@ This function calculates whether two sets of data are practically equivalent.
 }
 \keyword{TOST,}
 \keyword{equivalence,}
-

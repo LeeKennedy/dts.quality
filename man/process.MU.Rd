@@ -16,4 +16,3 @@ This function does the core MU calculations.
 }
 \keyword{MU}
 \keyword{calculations}
-

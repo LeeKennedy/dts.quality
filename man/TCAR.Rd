@@ -15,4 +15,3 @@ A routine for investigating Total CHO anomolies.
 \keyword{Carbohydrates}
 \keyword{TCAR,}
 \keyword{Total}
-

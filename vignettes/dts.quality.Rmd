@@ -79,5 +79,10 @@ H1 = the two sets are equivalent, being no more than epsilon apart.
 
 **Usage**: with two data sets, "A" and "B" and a proposed acceptable difference, "E".: **TOST(A, B, E, b)** where b is to optionally display boxplots.  By default it equals FALSE.
 
+## weekly_list
+
+This function takes a file, x, that is equal to the Kanbanchi export file "LK_Projects_full.csv", reconfigures it and exports it in table format to the current woring directory.
+
+**Usage**: for teh weekly meeting.
 ----
 
