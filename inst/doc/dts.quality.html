@@ -4,16 +4,17 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <meta name="author" content="Lee Kennedy" />
 
-<meta name="date" content="2016-03-31" />
 
 <title>dts.quality Package</title>
+
 
 
 
@@ -27,37 +28,21 @@
 
 
 
-<div class="fluid-row" id="header">
 
-
-<h1 class="title">dts.quality Package</h1>
+<h1 class="title toc-ignore">dts.quality Package</h1>
 <h4 class="author"><em>Lee Kennedy</em></h4>
-<h4 class="date"><em>2016-03-31</em></h4>
-
-</div>
+<h4 class="date"><em>May 18th, 2016</em></h4>
 
 
-<div id="anova_report" class="section level2">
-<h2>anova_report</h2>
-<p>This function is for comparing two or more data sets for equivalence using ANOVA. The output is a Word document that includes</p>
-<ol style="list-style-type: decimal">
-<li>the data</li>
-<li>a boxplot of the data</li>
-<li>An ANOVA table and</li>
-<li>A Tukey intepretation of the data.</li>
-</ol>
-<p>It expects a data table of the form usually used for ANOVA in Excel:</p>
+
+<div id="combo" class="section level2">
+<h2>combo</h2>
+<p>This function takes a data frame of figures such as might be presented for an ANOVA analysis and creates all possible repeatability and reproducibility combinations, labelled as such. It drops the column headers..</p>
 <pre><code>##  A B C D E
 ##  2 2 1 2 2
 ##  4 3 1 3 3
 ##  3 5 5 2 3
 ##  3 2 2 2 4</code></pre>
-<p>And, optionally, will accept units (in inverted commas) for labelling a box plot.</p>
-<p><strong>Usage</strong>: with a data file named “df” and units “mg/kg”: <strong>anova_report(df, “mg/kg”)</strong></p>
-</div>
-<div id="combo" class="section level2">
-<h2>combo</h2>
-<p>This function takes a data frame of figures such as might be presented for an ANOVA analysis (see <em>anova_report</em>, above) and creates all possible repeatability and reproducibility combinations, labelled as such. It drops the column headers.</p>
 <p><strong>Usage</strong>: with a data file named “df”: <strong>combo(df)</strong></p>
 </div>
 <div id="dupes" class="section level2">
@@ -79,10 +64,65 @@
 <p>This function identifies outliers in a list of data points.</p>
 <p><strong>Usage</strong>: with a list named “x”: <strong>outliers(x,b)</strong> where b is to optionally display boxplots. By default it equals FALSE.</p>
 </div>
-<div id="srm_limits" class="section level2">
-<h2>srm_limits</h2>
-<p>This function takes an SRM extract file from LIMS and determines the control limits.</p>
-<p>(incomplete)</p>
+<div id="tcar" class="section level2">
+<h2>TCAR</h2>
+<p>This function takes a LIMS extract (as a data frame) and rearranges it to look at the components in the Total Carbohydrate calculation.</p>
+<p>The items extracted from LIMS are:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Group</th>
+<th>Sub-Item</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>SAMPLE</td>
+<td>SAMPLE_NUMBER</td>
+</tr>
+<tr class="even">
+<td>TEST</td>
+<td>ANALYSIS</td>
+</tr>
+<tr class="odd">
+<td>RESULT</td>
+<td>REPORTED_NAME</td>
+</tr>
+<tr class="even">
+<td>RESULT</td>
+<td>REPORTED_UNITS</td>
+</tr>
+<tr class="odd">
+<td>RESULT</td>
+<td>REPORTED_VALUE</td>
+</tr>
+<tr class="even">
+<td>RESULT</td>
+<td>ENTRY</td>
+</tr>
+<tr class="odd">
+<td>RESULT</td>
+<td>REPORTABLE</td>
+</tr>
+<tr class="even">
+<td>RESULT</td>
+<td>ENTERED_BY</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Usage</strong>: with a dataframe extracted for the above parameters, named “x”: <strong>TCAR(x)</strong></p>
+</div>
+<div id="tost" class="section level2">
+<h2>TOST</h2>
+<p>This function examines two data sets and estimates whether they are equivalent, allowing for a (nominated) acceptable difference, E..</p>
+<p>Ho = the two sets are different. (The revers to the normal Ho.) H1 = the two sets are equivalent, being no more than epsilon apart. “Not rejected” means that we have not proven that the two sets are equivalent. “Rejected” means that there is enough evidence to say that the sets are equivalent, when we accept that equivalence is no more than ‘epsilon’ apart.</p>
+<p><strong>Usage</strong>: with two data sets, “A” and “B” and a proposed acceptable difference, “E”.: <strong>TOST(A, B, E, b)</strong> where b is to optionally display boxplots. By default it equals FALSE.</p>
+</div>
+<div id="weekly_list" class="section level2">
+<h2>weekly_list</h2>
+<p>This function takes a file, x, that is equal to the Kanbanchi export file “LK_Projects_full.csv”, reconfigures it and exports it in table format to the current woring directory.</p>
+<p><strong>Usage</strong>: for the weekly meeting.</p>
+<hr />
 </div>
 
 
@@ -92,7 +132,7 @@
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

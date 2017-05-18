@@ -1,7 +1,7 @@
 ---
 title: "dts.quality Package"
 author: "Lee Kennedy"
-date: "`r Sys.Date()`"
+date: "May 18th, 2016"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Vignette Title}
@@ -10,16 +10,9 @@ vignette: >
 ---
 
 
-## anova_report
+## combo
 
-This function is for comparing two or more data sets for equivalence using ANOVA.  The output is a Word document that includes
-
-1. the data
-2. a boxplot of the data
-3. An ANOVA table and 
-4. A Tukey intepretation of the data.
-
-It expects a data table of the form usually used for ANOVA in Excel:
+This function takes a data frame of figures such as might be presented for an ANOVA analysis and creates all possible repeatability and reproducibility combinations, labelled as such.  It drops the column headers..
 
 ```{r, echo=FALSE}
 A <- c(2,4,3,3)
@@ -31,14 +24,6 @@ x <- data.frame(A,B,C,D,E)
 print(x, row.names = FALSE)
 ```
 
-
-And, optionally, will accept units (in inverted commas) for labelling a box plot.
-
-**Usage**: with a data file named "df" and units "mg/kg": **anova_report(df, "mg/kg")**
-
-## combo
-
-This function takes a data frame of figures such as might be presented for an ANOVA analysis (see *anova_report*, above) and creates all possible repeatability and reproducibility combinations, labelled as such.  It drops the column headers.
 
 **Usage**: with a data file named "df": **combo(df)**
 
@@ -64,9 +49,42 @@ This function identifies outliers in a list of data points.
 
 **Usage**: with a list named "x": **outliers(x,b)** where b is to optionally display boxplots.  By default it equals FALSE.
 
-## srm_limits
+## TCAR
 
-This function takes an SRM extract file from LIMS and determines the control limits.
+This function takes a LIMS extract (as a data frame) and rearranges it to look at the components in the Total Carbohydrate calculation.
 
-(incomplete)
+The items extracted from LIMS are:
+
+Group    |   Sub-Item
+---------|-------------
+SAMPLE   | SAMPLE_NUMBER
+TEST     | ANALYSIS
+RESULT   | REPORTED_NAME
+RESULT   | REPORTED_UNITS
+RESULT   | REPORTED_VALUE
+RESULT   | ENTRY
+RESULT   | REPORTABLE
+RESULT   | ENTERED_BY
+
+**Usage**: with a dataframe extracted for the above parameters, named "x": **TCAR(x)** 
+
+## TOST
+
+This function examines two data sets and estimates whether they are equivalent, allowing for a (nominated) acceptable difference, E..
+
+Ho = the two sets are different. (The revers to the normal Ho.)
+H1 = the two sets are equivalent, being no more than epsilon apart.
+"Not rejected" means that we have not proven that the two sets are equivalent.
+"Rejected" means that there is enough evidence to say that the sets are equivalent, when we accept that equivalence is no more than 'epsilon' apart.
+
+**Usage**: with two data sets, "A" and "B" and a proposed acceptable difference, "E".: **TOST(A, B, E, b)** where b is to optionally display boxplots.  By default it equals FALSE.
+
+## weekly_list
+
+This function takes a file, x, that is equal to the Kanbanchi export file "LK_Projects_full.csv", reconfigures it and exports it in table format to the current woring directory.
+
+**Usage**: for the weekly meeting.
+
+
+----
 
