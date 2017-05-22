@@ -30,6 +30,7 @@ weekly_list <- function (x) {
 
         ### Split of the control markers ---------------------------------------
 
+        fnx$Lab <- NA
         fnx$GB <- NA
         fnx$Project_No <- NA
         fnx$CC <- NA
@@ -45,6 +46,7 @@ weekly_list <- function (x) {
                 if (m == 0) next
 
                 for (j in 1:m) {
+                        if(grepl("Area", temp[j]) == TRUE) fnx$Lab[i] = str_sub(temp[j], start= 6)
                         if(grepl("GB", temp[j]) == TRUE) fnx$GB[i] = "GB"
                         if(grepl("Project", temp[j]) == TRUE) fnx$Project_No[i] = str_sub(temp[j], start= -3)
                         if(grepl("CC", temp[j]) == TRUE) fnx$CC[i] = str_sub(temp[j], start= -3)
