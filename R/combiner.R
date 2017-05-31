@@ -12,6 +12,8 @@ df <- data.frame(
         A = numeric(),
         B = numeric())
 
+x <- as.data.frame(x)
+
 ###  Calculate repeatibility pairs ------------------------------------------
 l <- length(x)
 for (i in 1:l) {
