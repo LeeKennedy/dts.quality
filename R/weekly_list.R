@@ -5,7 +5,7 @@
 #'
 
 
-weekly_list <- function (x) {
+weekly_list <- function (x, b=FALSE) {
         fnx <- tidyr::gather(x, key = Area, value = Project, na.rm = FALSE, `To Do`, Doing, `With Lab`, `With IT`, `With Quality`, Limbo, Done)
 
         fnx <- na.omit(fnx)
@@ -22,6 +22,12 @@ weekly_list <- function (x) {
                 fnx$key[i] <- match(fnx$Area[i], area)
         }
 
+        if(b == FALSE) {
+                fnx <- fnx %>% filter(Area != "Done") %>%
+                        filter(!grepl("LK -", Project))
+        }
+
+
         ### Sort and initial split ---------------------------------------------
 
         fnx <- fnx %>%
@@ -32,7 +38,7 @@ weekly_list <- function (x) {
 
         fnx$Lab <- NA
         fnx$GB <- NA
-        fnx$Project_No <- NA
+        fnx$Proj <- NA
         fnx$CC <- NA
         fnx$NM <- NA
         fnx$EM <- NA
@@ -48,7 +54,7 @@ weekly_list <- function (x) {
                 for (j in 1:m) {
                         if(grepl("Area", temp[j]) == TRUE) fnx$Lab[i] = str_sub(temp[j], start= 6)
                         if(grepl("GB", temp[j]) == TRUE) fnx$GB[i] = "GB"
-                        if(grepl("Project", temp[j]) == TRUE) fnx$Project_No[i] = str_sub(temp[j], start= -3)
+                        if(grepl("Project", temp[j]) == TRUE) fnx$Proj[i] = str_sub(temp[j], start= -3)
                         if(grepl("CC", temp[j]) == TRUE) fnx$CC[i] = str_sub(temp[j], start= -3)
                         if(grepl("NM", temp[j]) == TRUE) fnx$NM[i] = str_sub(temp[j], start= -5)
                         if(grepl("EM", temp[j]) == TRUE) fnx$EM[i] = str_sub(temp[j], start= -5)

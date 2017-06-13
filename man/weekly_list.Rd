@@ -4,7 +4,7 @@
 \alias{weekly_list}
 \title{This function creates a summary file based on the exported data from Google Kanbanchi.}
 \usage{
-weekly_list(x)
+weekly_list(x, b = FALSE)
 }
 \arguments{
 \item{x}{A variable equal to the Kanbanchi export file "LK_Projects_full.csv"}
