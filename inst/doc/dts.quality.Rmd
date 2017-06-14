@@ -83,7 +83,7 @@ H1 = the two sets are equivalent, being no more than epsilon apart.
 
 This function takes a file, x, that is equal to the Kanbanchi export file "LK_Projects_full.csv", reconfigures it and exports it in table format to the current woring directory.
 
-**Usage**: for the weekly meeting.
+**Usage**: for the weekly meeting.  **weekly_list(x,b)**, where x is the file from Kanbanchi and b is a flag whether to include 'Done' and LK projects.  Default is FALSE, omit the 'Done' and LK projects.
 
 
 ----
