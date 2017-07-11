@@ -23,8 +23,7 @@ weekly_list <- function (x, b=FALSE) {
         }
 
         if(b == FALSE) {
-                fnx <- fnx %>% filter(Area != "Done") %>%
-                        filter(!grepl("LK -", Project))
+                fnx <- fnx %>% filter(!grepl("LK -", Project))
         }
 
 
@@ -43,6 +42,7 @@ weekly_list <- function (x, b=FALSE) {
         fnx$NM <- NA
         fnx$EM <- NA
         fnx$Story <- NA
+        fnx$Closed <- NA
 
         for (i in 1:n){
 
@@ -59,6 +59,7 @@ weekly_list <- function (x, b=FALSE) {
                         if(grepl("NM", temp[j]) == TRUE) fnx$NM[i] = str_sub(temp[j], start= -5)
                         if(grepl("EM", temp[j]) == TRUE) fnx$EM[i] = str_sub(temp[j], start= -5)
                         if(grepl("Story", temp[j]) == TRUE) fnx$Story[i] = str_sub(temp[j], start= -3)
+                        if(grepl("Closed", temp[j]) == TRUE) fnx$Closed[i] = str_sub(temp[j], start= -10)
                 }
         }
 
